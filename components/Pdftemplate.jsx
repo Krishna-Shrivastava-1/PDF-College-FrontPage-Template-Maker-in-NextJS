@@ -16,15 +16,44 @@ const Pdftemplate = () => {
   const [filename, setfilename] = useState('LabReport');
   const [fontFamily, setFontFamily] = useState('Calibri, Arial, sans-serif');
 
-  const handleDownloadPDF = async () => {
-    const input = document.getElementById("pdf-template");
-    if (!input) return;
-    const canvas = await html2canvas(input, { scale: 2 });
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF("p", "mm", "a4");
-    pdf.addImage(imgData, "PNG", 0, 0, 210, 297);
-    pdf.save(filename);
-  };
+//   const handleDownloadPDF = async () => {
+//     const input = document.getElementById("pdf-template");
+//     if (!input) return;
+//     const canvas = await html2canvas(input, { scale: 2 });
+//     const imgData = canvas.toDataURL("image/png");
+//     const pdf = new jsPDF("p", "mm", "a4");
+//     pdf.addImage(imgData, "PNG", 0, 0, 210, 297);
+//     pdf.save(filename);
+//   };
+
+const handleDownloadPDF = async () => {
+  const input = document.getElementById("pdf-template");
+  if (!input) return;
+
+  // Wait for all images inside the pdf-template to load
+  const images = input.querySelectorAll("img");
+  await Promise.all(
+    Array.from(images).map((img) => {
+      if (img.complete) return Promise.resolve();
+      return new Promise((resolve) => {
+        img.onload = img.onerror = resolve;
+      });
+    })
+  );
+
+  // Use html2canvas with proper settings
+  const canvas = await html2canvas(input, {
+    scale: 2,
+    useCORS: true, // necessary if any images are from Next.js or external
+    allowTaint: true,
+  });
+
+  const imgData = canvas.toDataURL("image/png");
+  const pdf = new jsPDF("p", "mm", "a4");
+  pdf.addImage(imgData, "PNG", 0, 0, 210, 297); // Full A4
+  pdf.save(filename || "LabReport.pdf");
+};
+
 
   const handleadd = () => {
     try {
@@ -268,7 +297,20 @@ const Pdftemplate = () => {
           width: "100%",
           margin: "20px 0"
         }}>
-          <Image alt='college logo' src={colllogo} width={250} height={250} />
+          {/* <Image alt='college logo' src={colllogo} width={250} height={250} /> */}
+          <Image
+  alt="college logo"
+  src={colllogo}
+  width={250}
+  height={250}
+  style={{
+    objectFit: 'contain',
+    display: 'block',
+    maxWidth: '100%',
+    height: 'auto'
+  }}
+/>
+
         </div>
         <h1 style={{
           textAlign: "center",
