@@ -9,6 +9,9 @@ import { Input } from './ui/input';
 import { Button } from './ui/button';
 
 const Pdftemplate = () => {
+    const [namesarr, setnamesarr] = useState('')
+    const [studentnamewithrollnum, setstudentnamewithrollnum] = useState([])
+    const [filename, setfilename] = useState('LabReport')
     const handleDownloadPDF = async () => {
         const input = document.getElementById("pdf-template");
         if (!input) return;
@@ -16,10 +19,9 @@ const Pdftemplate = () => {
         const imgData = canvas.toDataURL("image/png");
         const pdf = new jsPDF("p", "mm", "a4");
         pdf.addImage(imgData, "PNG", 0, 0, 210, 297); // Full A4
-        pdf.save("LabReport.pdf");
+        pdf.save(filename);
     };
-    const [namesarr, setnamesarr] = useState('')
-    const [studentnamewithrollnum, setstudentnamewithrollnum] = useState([])
+
     const handleadd = () => {
         try {
             if (!namesarr) return;
@@ -43,11 +45,11 @@ const Pdftemplate = () => {
         }
     }
     return (
-        <div>
-            <div className='w-full flex justify-around items-center mt-3 sticky top-0 bg-black/40 backdrop-blur-lg'>
-                <Dialog>
-                    <DialogTrigger><Button className='bg-green-600 cursor-pointer select-none'>Add Submitted by Names</Button></DialogTrigger>
-                    <DialogContent>
+        <div className='bg-zinc-950'>
+            <div className='w-full flex justify-around items-center  sticky top-0 z-40 bg-black/40 backdrop-blur-lg'>
+                <Dialog className='text-white'>
+                    <DialogTrigger><div className='bg-green-600 cursor-pointer select-none font-semibold text-white p-2 rounded-xl'>Add Submitted by Names</div></DialogTrigger>
+                    <DialogContent className='dark text-white'>
                         <DialogHeader>
                             <DialogTitle>You can Add Submitted by Names here</DialogTitle>
                             <DialogDescription>
@@ -73,6 +75,10 @@ const Pdftemplate = () => {
                         </DialogHeader>
                     </DialogContent>
                 </Dialog>
+                <div className='flex items-center justify-center gap-x-1.5'>
+                    <h2 className='text-white font-semibold'>File name -:</h2>
+                    <input type='text' className='border-none outline-none underline text-white tetx-lg font-semibold' placeholder='File Name' value={filename} onChange={(e) => setfilename(e.target.value)} />
+                </div>
 
                 <Button onClick={handleDownloadPDF} className='bg-sky-600 cursor-pointer select-none mx-3'>  Download as PDF</Button>
             </div>
@@ -83,7 +89,7 @@ const Pdftemplate = () => {
                     width: "210mm",
                     height: "297mm",
                     background: "#fff",
-                    margin: "40px auto",
+                    margin: "auto",
                     padding: "40px",
                     border: "1px solid #ccc",
                     boxShadow: "0 0 10px rgba(0,0,0,0.1)",
@@ -104,7 +110,7 @@ const Pdftemplate = () => {
                     NAAC ACCREDITED WITH A++ GRADE
                 </h1>
                 <hr className='mt-6' />
-                <div className='flex items-center justify-center w-full'>
+                <div className='flex items-center justify-center w-full relative'>
                     <Image alt='college logo' src={colllogo} width={250} height={250} />
                 </div>
                 <h1 className='text-center text-2xl'>
@@ -119,13 +125,13 @@ const Pdftemplate = () => {
                     <h1 style={{ textAlign: "center" }} className=' text-[20px] flex items-center justify-center font-bold'>
                         Date -
                     </h1>
-                    <input type="text" className='text-center flex items-center mt-5 w-[105px] justify-center border-none outline-none ' placeholder='Enter Date' />
+                    <input type="text" className='text-center flex items-center mt-4 w-[105px] justify-center border-none outline-none ' placeholder='Enter Date' />
                 </div>
                 <div className='h-auto w-full text-center'>
                     <h1 style={{ textAlign: "center" }} className='text-[20px]  font-bold'>
                         Submitted by :
                     </h1>
-                    {studentnamewithrollnum.length>0?
+                    {studentnamewithrollnum.length > 0 ?
                         studentnamewithrollnum.map((e, index) => (
                             <div key={index}>
                                 <h1 style={{ textAlign: "center" }} className='text-[20px]  font-bold'>
@@ -136,7 +142,7 @@ const Pdftemplate = () => {
                         ))
                         :
                         <div>
-                           <p> Add names by Add Submitted by Names Button</p>
+                            <p> Add names by Add Submitted by Names Button</p>
                         </div>
                     }
                     {/* <h1 style={{ textAlign: "center" }} className='text-[20px]  font-bold'>
