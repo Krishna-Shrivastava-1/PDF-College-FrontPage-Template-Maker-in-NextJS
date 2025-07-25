@@ -1,3 +1,5 @@
+
+
 'use client'
 import Image from 'next/image'
 import React, { useState } from 'react'
@@ -9,178 +11,425 @@ import { Input } from './ui/input';
 import { Button } from './ui/button';
 
 const Pdftemplate = () => {
-    const [namesarr, setnamesarr] = useState('')
-    const [studentnamewithrollnum, setstudentnamewithrollnum] = useState([])
-    const [filename, setfilename] = useState('LabReport')
-    const handleDownloadPDF = async () => {
-        const input = document.getElementById("pdf-template");
-        if (!input) return;
-        const canvas = await html2canvas(input, { scale: 2 });
-        const imgData = canvas.toDataURL("image/png");
-        const pdf = new jsPDF("p", "mm", "a4");
-        pdf.addImage(imgData, "PNG", 0, 0, 210, 297); // Full A4
-        pdf.save(filename);
-    };
+  const [namesarr, setnamesarr] = useState('');
+  const [studentnamewithrollnum, setstudentnamewithrollnum] = useState([]);
+  const [filename, setfilename] = useState('LabReport');
+  const [fontFamily, setFontFamily] = useState('Calibri, Arial, sans-serif');
 
-    const handleadd = () => {
-        try {
-            if (!namesarr) return;
-            if (namesarr) {
-                namesarr.trim()
-                setstudentnamewithrollnum([...studentnamewithrollnum, namesarr])
-                setnamesarr('')
-            }
-        } catch (error) {
-            console.log(error)
-            alert('error is comming ', error)
-        }
+  const handleDownloadPDF = async () => {
+    const input = document.getElementById("pdf-template");
+    if (!input) return;
+    const canvas = await html2canvas(input, { scale: 2 });
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("p", "mm", "a4");
+    pdf.addImage(imgData, "PNG", 0, 0, 210, 297);
+    pdf.save(filename);
+  };
 
+  const handleadd = () => {
+    try {
+      if (!namesarr.trim()) return;
+      setstudentnamewithrollnum([...studentnamewithrollnum, namesarr.trim()]);
+      setnamesarr('');
+    } catch (error) {
+      console.log(error)
+      alert('error is coming ' + error)
     }
-    const handledelete = (id) => {
-        try {
-            setstudentnamewithrollnum(studentnamewithrollnum.filter((_, idx) => idx !== id))
-        } catch (error) {
-            console.log(error)
-            alert('error is comming ', error)
-        }
+  };
+
+  const handledelete = (id) => {
+    try {
+      setstudentnamewithrollnum(studentnamewithrollnum.filter((_, idx) => idx !== id));
+    } catch (error) {
+      console.log(error)
+      alert('error is coming ' + error)
     }
-    return (
-        <div className='bg-zinc-950'>
-            <div className='w-full flex justify-around items-center  sticky top-0 z-40 bg-black/40 backdrop-blur-lg'>
-                <Dialog className='text-white'>
-                    <DialogTrigger><div className='bg-green-600 cursor-pointer select-none font-semibold text-white p-2 rounded-xl'>Add Submitted by Names</div></DialogTrigger>
-                    <DialogContent className='dark text-white'>
-                        <DialogHeader>
-                            <DialogTitle>You can Add Submitted by Names here</DialogTitle>
-                            <DialogDescription>
-                                You can Delete any name by clicking on it
-                            </DialogDescription>
-                            <div>
-                                <div className='flex items-center justify-between'>
-                                    <Input placeholder="Elon Musk (0901CSxxxxxx)" type="text" onChange={(e) => setnamesarr(e.target.value)} />
-                                    <Button variant="outline" onClick={handleadd}>Add Name</Button>
-                                </div>
-                                <h3>Added Names -:</h3>
-                                {
-                                    studentnamewithrollnum.map((e, index) => (
-                                        <div onClick={() => handledelete(index)} className='hover:bg-red-700 cursor-pointer rounded-xl' key={index}>
-                                            <h1 style={{ textAlign: "center" }} className='text-[20px]  font-bold'>
-                                                {e}
-                                            </h1>
+  }
 
-                                        </div>
-                                    ))
-                                }
-                            </div>
-                        </DialogHeader>
-                    </DialogContent>
-                </Dialog>
-                <div className='flex items-center justify-center gap-x-1.5'>
-                    <h2 className='text-white font-semibold'>File name -:</h2>
-                    <input type='text' className='border-none outline-none underline text-white tetx-lg font-semibold' placeholder='File Name' value={filename} onChange={(e) => setfilename(e.target.value)} />
-                </div>
+  const fontOptions = [
+    { label: "Calibri", value: "Calibri, Arial, sans-serif" },
+    { label: "Arial", value: "Arial, Helvetica, sans-serif" },
+    { label: "Times New Roman", value: "'Times New Roman', Times, serif" },
+    { label: "Georgia", value: "Georgia, serif" },
+    { label: "Courier New", value: "'Courier New', Courier, monospace" },
+    { label: "Roboto", value: "Roboto, Arial, sans-serif" },
+    { label: "Monospace", value: "monospace" },
+  ];
 
-                <Button onClick={handleDownloadPDF} className='bg-sky-600 cursor-pointer select-none mx-3'>  Download as PDF</Button>
+  return (
+    <div style={{ background: "#18181b", minHeight: "100vh" }}>
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "space-around",
+          alignItems: "center",
+          position: "sticky",
+          top: 0,
+          zIndex: 40,
+          background: "rgba(0,0,0,0.40)",
+          backdropFilter: "blur(2px)",
+          padding: "8px 0",
+        }}
+      >
+        <Dialog>
+          <DialogTrigger>
+            <div style={{
+              background: "#16a34a",
+              cursor: "pointer",
+              userSelect: "none",
+              fontWeight: 600,
+              color: "white",
+              padding: "8px 16px",
+              borderRadius: "12px"
+            }}>
+              Add Submitted by Names
             </div>
-
-            <div
-                id="pdf-template"
-                style={{
-                    width: "210mm",
-                    height: "297mm",
-                    background: "#fff",
-                    margin: "auto",
-                    padding: "40px",
-                    border: "1px solid #ccc",
-                    boxShadow: "0 0 10px rgba(0,0,0,0.1)",
-                    fontFamily: "Calibri, Arial, sans-serif",
-                    color: 'black'
-                }}
-            >
-                <h1 style={{ textAlign: "center" }} className='mx-5 text-[32px] mt-8 text-[#270b9d] font-bold'>
-                    Madhav Institute of Technology & Science, Gwalior (M.P.), INDIA
-                </h1>
-                <h1 style={{ textAlign: "center" }} className='text-[20px] text-[#d52720] font-bold'>
-                    Deemed University
-                </h1>
-                <h1 style={{ textAlign: "center" }} className='text-[19px] text-[#259208] font-bold'>
-                    (Declared under Distinct Category by Ministry of Education, Government of India)
-                </h1>
-                <h1 style={{ textAlign: "center" }} className='text-[20px] text-[#d52720] font-bold'>
-                    NAAC ACCREDITED WITH A++ GRADE
-                </h1>
-                <hr className='mt-6' />
-                <div className='flex items-center justify-center w-full relative'>
-                    <Image alt='college logo' src={colllogo} width={250} height={250} />
+          </DialogTrigger>
+          <DialogContent className='dark text-white'>
+            <DialogHeader>
+              <DialogTitle>You can Add Submitted by Names here</DialogTitle>
+              <DialogDescription>
+                You can Delete any name by clicking on it
+              </DialogDescription>
+              <div>
+                <div style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: 8
+                }}>
+                  <Input
+                    placeholder="Elon Musk (0901CSxxxxxx)"
+                    type="text"
+                    value={namesarr}
+                    onChange={e => setnamesarr(e.target.value)}
+                  />
+                  <Button variant="outline" onClick={handleadd}>Add Name</Button>
                 </div>
-                <h1 className='text-center text-2xl'>
-                    {/* {labfileorProjectfileon} */}
-                    <input type="text" className='border-none outline-none text-center w-[75%] font-semibold' placeholder='Enter which type file is it lab or project' />
-                </h1>
-                <h1 className='text-center font-bold text-2xl underline'>
-                    <input type="text" className='border-none outline-none text-center w-[75%] font-semibold' placeholder='Name of project or subject' />
-                    {/* Name of project or subject */}
-                </h1>
-                <div className='mt-5 text-[20px] flex items-center justify-center font-bold'>
-                    <h1 style={{ textAlign: "center" }} className=' text-[20px] flex items-center justify-center font-bold'>
-                        Date -
-                    </h1>
-                    <input type="text" className='text-center flex items-center mt-4 w-[105px] justify-center border-none outline-none ' placeholder='Enter Date' />
-                </div>
-                <div className='h-auto w-full text-center'>
-                    <h1 style={{ textAlign: "center" }} className='text-[20px]  font-bold'>
-                        Submitted by :
-                    </h1>
-                    {studentnamewithrollnum.length > 0 ?
-                        studentnamewithrollnum.map((e, index) => (
-                            <div key={index}>
-                                <h1 style={{ textAlign: "center" }} className='text-[20px]  font-bold'>
-                                    {e}
-                                </h1>
-
-                            </div>
-                        ))
-                        :
-                        <div>
-                            <p> Add names by Add Submitted by Names Button</p>
-                        </div>
-                    }
-                    {/* <h1 style={{ textAlign: "center" }} className='text-[20px]  font-bold'>
-                        Submitted by :
-                    </h1>
-                    <h1 style={{ textAlign: "center" }} className='text-[20px]  font-bold'>
-                        anystudentname (with roll number)
-                    </h1>
-                    <h1 style={{ textAlign: "center" }} className='text-[20px]  font-bold'>
-                        anystudentname (with roll number)
-                    </h1>
-                    <h1 style={{ textAlign: "center" }} className='text-[20px]  font-bold'>
-                        anystudentname (with roll number)
-                    </h1>
-                    <h1 style={{ textAlign: "center" }} className='text-[20px]  font-bold'>
-                        anystudentname (with roll number)
-                    </h1> */}
-                </div>
-                <h1 style={{ textAlign: "center" }} className='text-[20px] mt-5  font-bold'>
-                    Submitted to :
-                </h1>
-                <h1 style={{ textAlign: "center" }} className='text-[20px]  font-bold'>
-                    <input type="text" className='border-none outline-none text-center w-[75%] font-semibold' placeholder='Enter Prof. professor name' />
-                    {/* Prof. professir name */}
-                </h1>
-                <hr className='mt-6' />
-                <h1 style={{ textAlign: "center" }} className='text-[20px] mt-4 font-bold'>
-                    DEPARTMENT OF COMPUTER SCIENCE & ENGINEERING
-                </h1>
-                <h1 style={{ textAlign: "center" }} className='text-[20px] mt-4 font-bold'>
-                    <input type="text" className='border-none outline-none text-center w-[75%] font-semibold' placeholder='Enter whatever month is it - ex -Jan-June 2025' />
-                    {/* whatever month is it - ex -Jan-June 2025 */}
-                </h1>
-            </div>
-
-
+                <h3 style={{ marginTop: 8, fontWeight: 600 }}>Added Names -:</h3>
+                {studentnamewithrollnum.map((e, index) => (
+                  <div
+                    onClick={() => handledelete(index)}
+                    style={{
+                      background: "#b91c1c",
+                      cursor: "pointer",
+                      borderRadius: "12px",
+                      margin: "4px 0",
+                      padding: "3px 0"
+                    }}
+                    key={index}
+                  >
+                    <h1 style={{ textAlign: "center", fontSize: 20, fontWeight: 700, color: "white" }}>{e}</h1>
+                  </div>
+                ))}
+              </div>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "6px",
+            border: "1px solid #e5e7eb",
+            padding: "8px",
+            borderRadius: "12px",
+            background: "#09090b"
+          }}
+        >
+          <h2 style={{ color: "white", fontWeight: 600, margin: 0 }}>File name -:</h2>
+          <input
+            type='text'
+            style={{
+              border: "none",
+              outline: "none",
+              textDecoration: "underline",
+              color: "white",
+              fontSize: 16,
+              fontWeight: 600,
+              background: "transparent",
+              width: "110px"
+            }}
+            placeholder='File Name'
+            value={filename}
+            onChange={(e) => setfilename(e.target.value)}
+          />
         </div>
-    )
+        <div
+          style={{
+            display: "flex",
+            gap: "12px",
+            alignItems: "center",
+            background: "rgba(0,0,0,0.40)",
+            padding: "8px 16px",
+            borderRadius: "12px",
+            marginBottom: "8px"
+          }}
+        >
+          <span style={{ color: "white", fontWeight: 600 }}>Font Style:</span>
+          <select
+            style={{
+              borderRadius: "6px",
+              padding: "4px 8px",
+              color: "white",
+              background: "#09090b",
+              fontFamily,
+              fontSize: 15
+            }}
+            value={fontFamily}
+            onChange={e => setFontFamily(e.target.value)}
+          >
+            {fontOptions.map(opt => (
+              <option style={{ color: "white" }} key={opt.value} value={opt.value}>{opt.label}</option>
+            ))}
+          </select>
+        </div>
+        <Button
+          onClick={handleDownloadPDF}
+          style={{
+            background: "#0284c7",
+            cursor: "pointer",
+            userSelect: "none",
+            marginLeft: "12px",
+            color: "white",
+            fontWeight: 600,
+            fontSize: 16,
+            borderRadius: "10px",
+            padding: "8px 18px"
+          }}
+        >
+          Download as PDF
+        </Button>
+      </div>
+
+      <div
+        id="pdf-template"
+        style={{
+          width: "210mm",
+          height: "297mm",
+          background: "#fff",
+          margin: "auto",
+          padding: "40px",
+          border: "1px solid #ccc",
+          boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+          fontFamily,
+          color: "black",
+          position: "relative"
+        }}
+      >
+        <h1 style={{
+          textAlign: "center",
+          fontSize: 32,
+          margin: "30px 0 12px 0",
+          fontWeight: "bold",
+          color: "#270b9d"
+        }}>
+          Madhav Institute of Technology & Science, Gwalior (M.P.), INDIA
+        </h1>
+        <h1 style={{
+          textAlign: "center",
+          fontSize: 20,
+          fontWeight: "bold",
+          margin: "0 0 6px 0",
+          color: "#d52720"
+        }}>
+          Deemed University
+        </h1>
+        <h1 style={{
+          textAlign: "center",
+          fontSize: 19,
+          fontWeight: "bold",
+          color: "#259208",
+          margin: "0 0 6px 0"
+        }}>
+          (Declared under Distinct Category by Ministry of Education, Government of India)
+        </h1>
+        <h1 style={{
+          textAlign: "center",
+          fontSize: 20,
+          fontWeight: "bold",
+          color: "#d52720",
+          margin: "0 0 10px 0"
+        }}>
+          NAAC ACCREDITED WITH A++ GRADE
+        </h1>
+        <div style={{
+          marginTop: "18px",
+          width: "100%",
+          height: "1px",
+          background: "#18181b"
+        }} />
+        <div style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100%",
+          margin: "20px 0"
+        }}>
+          <Image alt='college logo' src={colllogo} width={250} height={250} />
+        </div>
+        <h1 style={{
+          textAlign: "center",
+          fontSize: 24,
+          margin: "6px 0"
+        }}>
+          <input
+            type="text"
+            style={{
+              border: "none",
+              outline: "none",
+              textAlign: "center",
+              width: "75%",
+              fontSize: 24,
+              fontWeight: 600
+            }}
+           
+            placeholder='Enter which type file is it lab or project'
+          />
+        </h1>
+        <h1 style={{
+          textAlign: "center",
+          fontWeight: "bold",
+          textDecoration: "underline",
+          fontSize: 24,
+          margin: "10px 0"
+        }}>
+          <input
+            type="text"
+            style={{
+              border: "none",
+              outline: "none",
+              textAlign: "center",
+              width: "75%",
+              fontSize: 24,
+              fontWeight: 600
+            }}
+            placeholder='Name of project or subject'
+          />
+        </h1>
+        <div style={{
+          marginTop: "18px",
+          fontSize: 20,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontWeight: "bold"
+        }}>
+          <span style={{
+            textAlign: "center",
+            fontSize: 20,
+            fontWeight: "bold",
+            marginRight: "6px"
+          }}>Date -</span>
+          <input
+            type="text"
+            style={{
+              textAlign: "center",
+              width: 105,
+              border: "none",
+              outline: "none",
+              fontSize: 19,
+              fontWeight: 600,
+              marginTop:14
+            }}
+            placeholder='Enter Date'
+          />
+        </div>
+        <div style={{
+          minHeight: "50px",
+          width: "100%",
+          textAlign: "center",
+          marginTop: "18px"
+        }}>
+          <h1 style={{
+            textAlign: "center",
+            fontSize: 20,
+            fontWeight: 700
+          }}>
+            Submitted by :
+          </h1>
+          {studentnamewithrollnum.length > 0 ?
+            studentnamewithrollnum.map((e, index) => (
+              <div key={index}>
+                <h1 style={{
+                  textAlign: "center",
+                  fontSize: 20,
+                  fontWeight: 700
+                }}>
+                  {e}
+                </h1>
+              </div>
+            ))
+            :
+            <div>
+              <p style={{ color: "#999", fontStyle: "italic" }}>Add names by Add Submitted by Names Button</p>
+            </div>
+          }
+        </div>
+        <h1 style={{
+          textAlign: "center",
+          fontSize: 20,
+          fontWeight: 700,
+          marginTop: "20px"
+        }}>
+          Submitted to :
+        </h1>
+        <h1 style={{
+          textAlign: "center",
+          fontSize: 20,
+          fontWeight: 700,
+        }}>
+          <input
+            type="text"
+            style={{
+              border: "none",
+              outline: "none",
+              textAlign: "center",
+              width: "75%",
+              fontSize: 20,
+              fontWeight: 600
+            }}
+            placeholder='Enter Prof. professor name'
+          />
+        </h1>
+        <div style={{
+          marginTop: "24px",
+          width: "100%",
+          height: "1px",
+          background: "#18181b"
+        }} />
+        <h1 style={{
+          textAlign: "center",
+          fontSize: 20,
+          fontWeight: 700,
+          marginTop: "20px"
+        }}>
+          DEPARTMENT OF COMPUTER SCIENCE & ENGINEERING
+        </h1>
+        <h1 style={{
+          textAlign: "center",
+          fontSize: 20,
+          fontWeight: 700,
+          marginTop: "16px"
+        }}>
+          <input
+            type="text"
+            style={{
+              border: "none",
+              outline: "none",
+              textAlign: "center",
+              width: "75%",
+              fontSize: 18,
+              fontWeight: 600
+            }}
+            placeholder='Enter whatever month is it - ex -Jan-June 2025'
+          />
+        </h1>
+      </div>
+    </div>
+  )
 }
 
-export default Pdftemplate
+export default Pdftemplate;

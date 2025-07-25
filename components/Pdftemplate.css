@@ -1,0 +1,209 @@
+.page-container {
+  background: #0f0f0f;
+  padding-bottom: 50px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  padding: 15px;
+  z-index: 40;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.dialog-box {
+  color: white;
+}
+
+.dialog-trigger {
+  background-color: #22c55e;
+  padding: 10px 15px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+}
+
+.dialog-content {
+  margin-top: 10px;
+  background-color: #1a1a1a;
+  padding: 15px;
+  border-radius: 10px;
+  color: white;
+}
+
+.input-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.input-group input {
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  flex: 1;
+}
+
+.input-group button {
+  padding: 6px 10px;
+  background: #0ea5e9;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+}
+
+.names-list {
+  margin-top: 10px;
+}
+
+.name-item {
+  padding: 6px 8px;
+  background-color: #991b1b;
+  margin: 4px 0;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.filename-box {
+  display: flex;
+  align-items: center;
+  color: white;
+  gap: 8px;
+}
+
+.filename-box input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid white;
+  color: white;
+  font-weight: bold;
+  padding: 4px;
+}
+
+.font-select {
+  color: white;
+}
+
+.font-select select {
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.download-btn {
+  background-color: #0284c7;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  border: none;
+}
+
+.pdf-template {
+  width: 210mm;
+  height: 297mm;
+  background: white;
+  margin: auto;
+  padding: 40px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  color: black;
+}
+
+.main-heading {
+  text-align: center;
+  font-size: 32px;
+  margin-top: 20px;
+  color: #270b9d;
+  font-weight: bold;
+}
+
+.sub-heading {
+  text-align: center;
+  font-size: 20px;
+  color: #d52720;
+  font-weight: bold;
+}
+
+.green-heading {
+  text-align: center;
+  font-size: 19px;
+  color: #259208;
+  font-weight: bold;
+}
+
+.divider {
+  margin: 20px 0;
+  height: 1px;
+  background: #1a1a1a;
+  border: none;
+}
+
+.logo-box {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.input-title {
+  text-align: center;
+  font-size: 20px;
+  margin: 10px 0;
+}
+
+.input-title input {
+  width: 75%;
+  text-align: center;
+  font-weight: bold;
+  border: none;
+  outline: none;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.date-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.date-box input {
+  width: 100px;
+  text-align: center;
+  border: none;
+  outline: none;
+  padding: 4px;
+}
+
+.submitted-box {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.submitted-box h3 {
+  font-weight: bold;
+  margin: 4px 0;
+}
+
+.submitted-box input {
+  border: none;
+  outline: none;
+  text-align: center;
+  width: 75%;
+  font-weight: bold;
+}
