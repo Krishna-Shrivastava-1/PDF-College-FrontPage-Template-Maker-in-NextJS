@@ -30,29 +30,34 @@ const handleDownloadPDF = async () => {
   const input = document.getElementById("pdf-template");
   if (!input) return;
 
-  // Wait for all images inside the pdf-template to load
+  // Wait for all images inside the PDF area to load
   const images = input.querySelectorAll("img");
   await Promise.all(
     Array.from(images).map((img) => {
-      if (img.complete) return Promise.resolve();
+      if (img.complete && img.naturalHeight !== 0) return Promise.resolve();
       return new Promise((resolve) => {
         img.onload = img.onerror = resolve;
       });
     })
   );
 
-  // Use html2canvas with proper settings
+  // Give the browser a brief pause to finish rendering
+  await new Promise((res) => setTimeout(res, 200));
+
   const canvas = await html2canvas(input, {
     scale: 2,
-    useCORS: true, // necessary if any images are from Next.js or external
+    useCORS: true,
     allowTaint: true,
+    logging: true,
+    backgroundColor: "#fff", // Optional: ensures white background
   });
 
   const imgData = canvas.toDataURL("image/png");
   const pdf = new jsPDF("p", "mm", "a4");
-  pdf.addImage(imgData, "PNG", 0, 0, 210, 297); // Full A4
+  pdf.addImage(imgData, "PNG", 0, 0, 210, 297);
   pdf.save(filename || "LabReport.pdf");
 };
+
 
 
   const handleadd = () => {
@@ -298,18 +303,21 @@ const handleDownloadPDF = async () => {
           margin: "20px 0"
         }}>
           {/* <Image alt='college logo' src={colllogo} width={250} height={250} /> */}
-          <Image
+       <img
+  src="/assets/logo.png"
   alt="college logo"
-  src={colllogo}
-  width={250}
-  height={250}
+  id="college-logo"
+  width="250"
+  height="250"
   style={{
-    objectFit: 'contain',
-    display: 'block',
-    maxWidth: '100%',
-    height: 'auto'
+    objectFit: "contain",
+    maxWidth: "100%",
+    height: "auto",
+    display: "block",
+    margin: "0 auto"
   }}
 />
+
 
         </div>
         <h1 style={{
