@@ -91,7 +91,6 @@ const handleDownloadPDF = async () => {
 
   return (
     <div style={{ background: "#18181b", minHeight: "100vh" }}>
-      <h1>Testing Here By -: Krishna Shrivastava</h1>
       <div
         style={{
           width: "100%",
@@ -250,7 +249,8 @@ const handleDownloadPDF = async () => {
           boxShadow: "0 0 10px rgba(0,0,0,0.1)",
           fontFamily,
           color: "black",
-          position: "relative"
+          position: "relative",
+          paddingTop:"20px"
         }}
       >
         <h1 style={{
@@ -450,14 +450,32 @@ const handleDownloadPDF = async () => {
           height: "1px",
           background: "#18181b"
         }} />
-        <h1 style={{
+         <h1 style={{
+          textAlign: "center",
+          fontSize: 20,
+          fontWeight: 700,
+        }}>
+          <input
+            type="text"
+            style={{
+              border: "none",
+              outline: "none",
+              textAlign: "center",
+              width: "75%",
+              fontSize: 20,
+              fontWeight: 600
+            }}
+            placeholder='DEPARTMENT OF COMPUTER SCIENCE & ENGINEERING'
+          />
+        </h1>
+        {/* <h1 style={{
           textAlign: "center",
           fontSize: 20,
           fontWeight: 700,
           marginTop: "20px"
         }}>
           DEPARTMENT OF COMPUTER SCIENCE & ENGINEERING
-        </h1>
+        </h1> */}
         <h1 style={{
           textAlign: "center",
           fontSize: 20,
