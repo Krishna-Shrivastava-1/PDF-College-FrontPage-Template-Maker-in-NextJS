@@ -90,7 +90,7 @@ const handleDownloadPDF = async () => {
   ];
 
   return (
-    <div style={{ background: "#18181b", minHeight: "100vh" }}>
+    <div style={{ background: "#120026", minHeight: "100vh" }}>
       <div
         style={{
           width: "100%",
@@ -385,6 +385,7 @@ const handleDownloadPDF = async () => {
               marginTop:14
             }}
             placeholder='Enter Date'
+            maxLength={10}
           />
         </div>
         <div style={{
